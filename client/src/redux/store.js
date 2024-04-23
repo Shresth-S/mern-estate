@@ -5,7 +5,7 @@ import storage from 'redux-persist/lib/storage';
 
 //persisted reducer is created to store user info in local storage so that user does not fade away on refreshing
 
-const rootReducer = combineReducers({ userReducer });
+const rootReducer = combineReducers({user: userReducer });
 
 const persistConfig = {
     key: 'root',
