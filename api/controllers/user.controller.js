@@ -1,6 +1,6 @@
-import User from "../models/Users.js";
-import errorHandler from "../utils/error.js";
-import bcryptjs from 'bcryptjs'
+import User from '../models/Users.js';
+import {errorHandler} from '../utils/error.js';
+import bcryptjs from 'bcryptjs';
 
 export const test = (req, res) => {
     res.send("Hello world1234");
