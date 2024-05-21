@@ -201,7 +201,7 @@ export default function CreateListinggg() {
                       </div>
                       <div className='flex gap-2'>
                         <div className='flex items-center gap-2'>
-                            <input onChange={handleChange} value={formData.regularPrice} type="number" id='regularPrice' min='50' max='1000' required className='p-2 border border-gray-300 rounded-lg'/>
+                            <input onChange={handleChange} value={formData.regularPrice} type="number" id='regularPrice' min='50' max='1000000' required className='p-2 border border-gray-300 rounded-lg'/>
                             <div className="flex flex-col items-center">
                                 <p>Regular Price</p>
                                 <span className='text-xs'>($/month)</span>
@@ -210,7 +210,7 @@ export default function CreateListinggg() {
                           
                         {formData.offer && (
                             <div className='flex items-center gap-2'>
-                                <input onChange={handleChange} value={formData.discountPrice} type="number" id='discountPrice' min='0' max='1000' required className='p-2 border border-gray-300 rounded-lg'/>
+                                <input onChange={handleChange} value={formData.discountPrice} type="number" id='discountPrice' min='0' max='1000000' required className='p-2 border border-gray-300 rounded-lg'/>
                                 <div className="flex flex-col items-center">
                                     <p>Discounted price</p>
                                     <span className='text-xs'>($/month)</span>
