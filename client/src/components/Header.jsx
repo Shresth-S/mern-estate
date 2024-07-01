@@ -4,6 +4,26 @@ import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
 export default function Header() {
+  const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "light");
+
+  const handleToggle = (e) => {
+    console.log("hello");
+    if (theme === "dark") {
+      document.querySelector('html').classList.remove("dark");
+      setTheme("light");
+    } else {
+      document.querySelector('html').classList.add("dark");
+      setTheme("dark");
+    }
+  }
+
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+    const localTheme = localStorage.getItem("theme");
+    document.querySelector('html').setAttribute("data-theme", localTheme);
+  }, [theme]);
+
+
   const { currentUser } = useSelector(state => state.user);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
@@ -28,8 +48,8 @@ export default function Header() {
       <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
         <Link to='/'>
           <h1 className='font-bold text-sm sm:text-xl flex flex-wrap'>
-            <span className='text-slate-500'>Shresth</span>
-            <span className='text-slate-700'>Estate</span>
+            {/* <span className='text-slate-500'>Writify</span> */}
+            <span className='text-2xl text-slate-700'>Writify...</span>
           </h1>
         </Link>
         <form onSubmit={handleSubmit} className='bg-slate-100 p-3 rounded-lg flex items-center'>
@@ -42,6 +62,10 @@ export default function Header() {
           </button>
         </form>
         <ul className='flex gap-4'>
+          <button className='border border-gray-950 pl-2 pr-2 rounded-xl mb-1 text-gray-950' onClick={handleToggle}>
+            {theme==="light" ? "Dark":"Light"}
+          </button>
+          
           <Link to='/'>
             <li className='hidden sm:inline text-slate-700 hover:underline'>
               Home

@@ -5,6 +5,11 @@ import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSli
 import OAuth from '../components/OAuth.jsx';
 
 export default function SignIn() {
+  let theme = localStorage.getItem("theme");
+  if (!theme) {
+    theme = "light";
+  }
+
   const [formData, setFormData] = useState({});
   const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();

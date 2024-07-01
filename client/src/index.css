@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+:root{
+    --body_background:rgb(241,245, 241);
+}
+
 body{
-    background-color: rgb(241,245, 241);
+    background-color: var(--body_background);
+}
+
+[data-theme="dark"]{
+    --body_background: #282c34;
 }

@@ -1,14 +1,18 @@
 import React from 'react'
 
 export default function About() {
+  let theme = localStorage.getItem("theme");
+  if (!theme) {
+    theme = "light";
+  }
   return (
-    <div className='py-20 px-4 max-w-6xl mx-auto'>
-      <h1 className='text-3xl font-bold mb-4 text-slate-800'>Shresth Estate</h1>
-      <p className='mb-4 text-slate-700'>Shresth Estate is a leading real estate agency that specializes in helping clients buy, sell, and rent properties in the most desirable neighborhoods. Our team of experienced agents is dedicated to providing exceptional service and making the buying and selling process as smooth as possible.</p>
-      <p className='mb-4 text-slate-700'>
-      Our mission is to help our clients achieve their real estate goals by providing expert advice, personalized service, and a deep understanding of the local market. Whether you are looking to buy, sell, or rent a property, we are here to help you every step of the way.
+    <div className={`py-20 px-4 max-w-6xl mx-auto ${theme==="dark" ?  'text-white' : 'text-slate-700'}`}>
+      <h1 className='text-3xl font-bold mb-4 text-slate-800'>Writify</h1>
+      <p className='mb-4'>Writify is a leading blogging website that specializes in providing you the best reading and writing experience. Whether you want to gain insights on topic , want to explre information or just want to share you invaluable and exciting experiences, Writify caters to all your needs.</p>
+      <p className='mb-4'>
+      Our mission is to foster a community of passionate foodies, techies, travel enthusiasts and lifestyle explores who share a love for discovering new cultures and flavors and technologies.  Through engaging content, informative guides, and a vibrant online community, Writify will empower readers to embark on their own adventures around the globe.
       </p>
-      <p className='mb-4 text-slate-700'>Our team of agents has a wealth of experience and knowledge in the real estate industry, and we are committed to providing the highest level of service to our clients. We believe that buying or selling a property should be an exciting and rewarding experience, and we are dedicated to making that a reality for each and every one of our clients.</p>
+      <p className='mb-4'>Our team has experts from a wealth of experience and knowledge in the related industry, and we are committed to providing the highest level of service to our visitors. We believe that reading or writing content should be an exciting and rewarding experience, and we are dedicated to making that a reality for each and every one of our users.</p>
     
     </div>
   )

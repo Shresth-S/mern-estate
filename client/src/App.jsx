@@ -6,10 +6,10 @@ import About from './pages/About';
 import Profile from './pages/Profile';
 import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
-import CreateListinggg from './pages/CreateListinggg';
-import UpdateListing from './pages/UpdateListing';
-import Listing from './pages/Listing';
+import UpdateBlog from './pages/UpdateBlog';
+import Blog from './pages/Blog';
 import Search from './pages/Search';
+import CreateBlog from './pages/CreateBlog';
 
 export default function App() {
   return (
@@ -21,12 +21,12 @@ export default function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/about" element={<About />} />
         <Route path='/search' element={<Search/>}/>
-        <Route path="/listing/:listingId" element={<Listing />} />
+        <Route path="/blog/:blogId" element={<Blog />} />
         
         <Route element={<PrivateRoute />} >
           <Route path="/profile" element={<Profile />} />
-          <Route path="/create-listing" element={<CreateListinggg />} />
-          <Route path="/update-listing/:listingId" element={<UpdateListing />} />
+          <Route path="/create-blog" element={<CreateBlog />} />
+          <Route path="/update-blog/:blogId" element={<UpdateBlog />} />
         </Route>
       </Routes>
     </BrowserRouter>

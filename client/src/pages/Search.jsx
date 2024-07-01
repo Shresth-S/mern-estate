@@ -1,75 +1,79 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ListingItem from '../components/ListingItem';
+import BlogItem from '../components/BlogItem';
 
 export default function Search() {
+    let theme = localStorage.getItem("theme");
+    if (!theme) {
+        theme = "light";
+    }
+
     const navigate = useNavigate();
     const [sidebarData, setSidebarData] = useState({
         searchTerm: '',
-        type: 'all',
-        parking: false,
-        furnished: false,
+        lifestyle: false,
+        food: false,
+        travel: false,
+        technology: false,
         offer: false,
         sort: 'created_at',
         order:'desc',
     })
 
     const [loading, setLoading] = useState(false);
-    const [listings, setListings] = useState([]);
+    const [blogs, setBlogs] = useState([]);
     const [showMore, setShowMore] = useState(false);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search);
         const searchTermFromUrl = urlParams.get('searchTerm');
-        const typeFromUrl = urlParams.get('type');
-        const parkingFromUrl = urlParams.get('parking');
-        const furnishedFromUrl = urlParams.get('furnished');
+        const lifestyleFromUrl = urlParams.get('lifestyle');
+        const foodFromUrl = urlParams.get('food');
+        const travelFromUrl = urlParams.get('travel');
+        const technologyFromUrl = urlParams.get('technology');
         const offerFromUrl = urlParams.get('offer');
         const sortFromUrl = urlParams.get('sort');
         const orderFromUrl = urlParams.get('order');
 
-        if (searchTermFromUrl || typeFromUrl || parkingFromUrl || furnishedFromUrl || offerFromUrl || sortFromUrl || orderFromUrl) {
+        if (searchTermFromUrl || lifestyleFromUrl || foodFromUrl || travelFromUrl || technologyFromUrl || offerFromUrl || sortFromUrl || orderFromUrl) {
             //if any of them changes
             setSidebarData({
                 searchTerm: searchTermFromUrl || '',
-                type: typeFromUrl || 'all',
-                parking: parkingFromUrl === 'true' ? true : false,
-                furnished: furnishedFromUrl === 'true' ? true : false,
+                lifestyle: lifestyleFromUrl === 'true' ? true : false,
+                food: foodFromUrl === 'true' ? true : false,
+                travel: travelFromUrl === 'true' ? true : false,
+                technology: technologyFromUrl === 'true' ? true : false,
                 offer: offerFromUrl === 'true' ? true : false,
                 sort: sortFromUrl || 'created_at',
                 order: orderFromUrl || 'desc',
             });
         }
 
-        const fetchListings = async () => {
+        const fetchBlogs = async () => {
             setLoading(true);
             setShowMore(false);
             const searchQuery = urlParams.toString();
-            const res = await fetch(`/api/listing/get?${searchQuery}`);
+            const res = await fetch(`/api/blog/get?${searchQuery}`);
             const data = await res.json();
             if (data.length > 8) {
                 setShowMore(true);
             }else {
                 setShowMore(false);
             }
-            setListings(data);
+            setBlogs(data);
             setLoading(false);
         }
 
-        fetchListings();
+        fetchBlogs();
 
     }, [location.search]);
 
     const handleChange = (e) => {
-        if (e.target.id === 'all' || e.target.id === 'rent' || e.target.id === 'sale') {
-            setSidebarData({ ...sidebarData, type: e.target.id });
-        }
-
         if (e.target.id === 'searchTerm') {
             setSidebarData({...sidebarData, searchTerm: e.target.value})
         }
 
-        if (e.target.id === 'parking' || e.target.id === 'furnished' || e.target.id === 'offer') {
+        if (e.target.id === 'lifestyle' || e.target.id === 'food' || e.target.id === 'travel' || e.target.id === 'technology') {
             setSidebarData({ ...sidebarData, [e.target.id]: e.target.checked || e.target.checked === 'true' ? true : false });
         }
 
@@ -88,10 +92,10 @@ export default function Search() {
         const urlParams = new URLSearchParams();
 
         urlParams.set('searchTerm', sidebarData.searchTerm);
-        urlParams.set('type', sidebarData.type);
-        urlParams.set('parking', sidebarData.parking);
-        urlParams.set('furnished', sidebarData.furnished);
-        urlParams.set('offer', sidebarData.offer);
+        urlParams.set('lifestyle', sidebarData.lifestyle);
+        urlParams.set('food', sidebarData.food);
+        urlParams.set('travel', sidebarData.travel);
+        urlParams.set('technology', sidebarData.technology);
         urlParams.set('sort', sidebarData.sort);
         urlParams.set('order', sidebarData.order);
 
@@ -100,17 +104,17 @@ export default function Search() {
     }
 
     const onShowMoreClick = async () => {
-        const numberOfListings = listings.length;
-        const startIndex = numberOfListings;
+        const numberOfBlogs = blogs.length;
+        const startIndex = numberOfBlogs;
         const urlParams = new URLSearchParams(location.search);
         urlParams.set('startIndex', startIndex);
         const searchQuery = urlParams.toString();
-        const res = await fetch(`/api/listing/get?${searchQuery}`);
+        const res = await fetch(`/api/blog/get?${searchQuery}`);
         const data = await res.json();
         if (data.length < 9) {
             setShowMore(false);
         }
-        setListings([...listings, ...data]);
+        setBlogs([...blogs, ...data]);
     };
 
   return (
@@ -123,47 +127,33 @@ export default function Search() {
                           className='border rounded-lg p-3 w-full'
                           value={sidebarData.searchTerm} onChange={handleChange } />
                   </div>
+
                   <div className="flex gap-2 flex-wrap items-center">
-                      <label className='font-semibold'>Type:</label>
+                      <label className='font-semibold'>Related to:</label>
                       <div className="flex gap-2">
-                          <input type="checkbox" id="all" className='w-5'
-                              onChange={handleChange} checked={sidebarData.type === 'all'} />
-                          <span>Rent & Sale</span>
+                          <input type="checkbox" id="lifestyle" className='w-5'
+                            onChange={handleChange} checked={sidebarData.lifestyle} />
+                          <span>Lifestyle</span>
                       </div>
                       <div className="flex gap-2">
-                          <input type="checkbox" id="rent" className='w-5'
-                              onChange={handleChange} checked={ sidebarData.type === 'rent'} />
-                          <span>Rent</span>
+                          <input type="checkbox" id="food" className='w-5'
+                            onChange={handleChange} checked={sidebarData.food} />
+                          <span>Food</span>
                       </div>
                       <div className="flex gap-2">
-                          <input type="checkbox" id="sale" className='w-5'
-                              onChange={handleChange} checked={ sidebarData.type==='sale'}/>
-                          <span>Sale</span>
+                          <input type="checkbox" id="travel" className='w-5'
+                            onChange={handleChange} checked={sidebarData.travel} />
+                          <span>Travel</span>
                       </div>
                       <div className="flex gap-2">
-                          <input type="checkbox" id="offer" className='w-5'
-                              onChange={handleChange} checked={sidebarData.offer} />
-                          <span>Offer</span>
-                      </div>
-                  </div>
-                  <div className="flex gap-2 flex-wrap items-center">
-                      <label className='font-semibold'>Amenities:</label>
-                      <div className="flex gap-2">
-                          <input type="checkbox" id="parking" className='w-5'
-                            onChange={handleChange} checked={sidebarData.parking} />
-                          <span>Parking</span>
-                      </div>
-                      <div className="flex gap-2">
-                          <input type="checkbox" id="furnished" className='w-5'
-                            onChange={handleChange} checked={sidebarData.furnished} />
-                          <span>Furnished</span>
+                          <input type="checkbox" id="technology" className='w-5'
+                            onChange={handleChange} checked={sidebarData.technology} />
+                          <span>Technology</span>
                       </div>
                   </div>
                   <div className='flex items-center gap-2'>
                       <label className='font-semibold'>Sort:</label>
                       <select onChange={handleChange} defaultValue={'created_at_desc'} id="sort_order" className='border rounded-lg p-3'>
-                          <option value={'regularPrice_desc'}>Price: high to low</option>
-                          <option value={'regularPrice_asc'}>Price: low to high</option>
                           <option value={'createdAt_desc'}>Latest</option>
                           <option value={'createdAt_asc'}>Oldest</option>
                       </select>
@@ -174,18 +164,18 @@ export default function Search() {
 
           <div className="flex-1">
               <h1 className='text-3xl font-semibold border-b p-3 text-slate-700 mt-5'>
-                  Listing results:
+                  Blog results:
               </h1>
               <div className="p-7 flex flex-wrap gap-4">
-                  {!loading && listings.length === 0 && (
-                      <p className='text-xl text-slate-700'>No listing found!</p>
+                  {!loading && blogs.length === 0 && (
+                      <p className='text-xl text-slate-700'>No blog found!</p>
                   )}
                   {loading && (
                       <p className='text-xl text-slate-700 text-center w-full'>Loading...</p>
                   )}
 
-                  {!loading && listings && listings.map((listing) => (
-                          <ListingItem key={listing._id} listing={listing} />
+                  {!loading && blogs && blogs.map((blog) => (
+                          <BlogItem key={blog._id} blog={blog} />
                       ))
                   }
 
